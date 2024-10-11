@@ -56,14 +56,14 @@ void loop() {
   if (leftIR < 680) { // If true, left sensor no longer sees black tape
     rightMotor->setSpeed(22); // make the right motor slower to make a slight right
     if (wideLeftIR < 680) { // if both left and wide left are off black tape
-      leftMotor->setSpeed(35) // make left side faster for a sharper right turn 
+      leftMotor->setSpeed(35); // make left side faster for a sharper right turn 
     }
   }
 
   if (rightIR < 600) { // If true, right sensor no longer sees black tape
     leftMotor->setSpeed(22); // make the left motor slower to make a slight left
     if (wideRightIR < 680) { // if both right and wide right are off black tape
-      rightMotor->setSpeed(35) // make  right side faster for a sharper left turn
+      rightMotor->setSpeed(35); // make  right side faster for a sharper left turn
     }
   }
 
