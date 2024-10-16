@@ -14,6 +14,15 @@ int leftIR = 0;
 int rightIR = 0;
 int wideRightIR = 0;
 
+//int wideLeftThresh = 955;
+//int wideRightThresh = 835;
+
+int wideLeftThresh = 970;
+int wideRightThresh = 875;
+
+//int leftThresh = 740;
+//int rightThresh = 730;
+
 
 void setup() {
   // put your setup code here, to run once:
@@ -33,38 +42,68 @@ void loop() {
 //  Serial.println(current_time);
 //  timeSinceBlink = 
   
-  leftMotor->setSpeed(30);
-  rightMotor->setSpeed(30);
+  
 
   leftMotor->run(BACKWARD);
   rightMotor->run(BACKWARD);
 
   leftIR = analogRead(1);
-  wideLeftIR = analogRead(3);
+  wideRightIR = analogRead(3);
   rightIR = analogRead(2);
-  wideRightIR = analogRead(4);
+  wideLeftIR = analogRead(5);
   
   Serial.print(wideLeftIR);
   Serial.print(",");
-  Serial.print(leftIR);
-  Serial.print(",");
-  Serial.print(rightIR);
-  Serial.print(",");
+//  Serial.print(leftIR);
+//  Serial.print(",");
+//  Serial.print(rightIR);
+//  Serial.print(",");
   Serial.print(wideRightIR);
-  Serial.println(",");
+  Serial.println("");
 
-  if (leftIR < 680) { // If true, left sensor no longer sees black tape
+  if (wideLeftIR > wideLeftThresh) {
+    rightMotor->setSpeed(0);
+    Serial.println("LEFT SEES TAPE. GO RIGHT");
+  }
+
+  else if(wideRightIR > wideRightThresh) {
+    leftMotor->setSpeed(0);
+    Serial.println("RIGHT SEES TAPE. GO LEFT");
+
+
+  }
+  else {
+    leftMotor->setSpeed(25);
+    rightMotor->setSpeed(25);
+  }
+  
+  /*
+  if (leftIR < leftThresh) { // If true, left sensor no longer sees black tape = TURN RIGHT
     rightMotor->setSpeed(22); // make the right motor slower to make a slight right
-    if (wideLeftIR < 680) { // if both left and wide left are off black tape
+    Serial.println("");
+    if (wideRightIR > wideRightThresh) { // if both left is off tape and wide right is on tape
       leftMotor->setSpeed(35); // make left side faster for a sharper right turn 
+      if (rightIR < rightThresh) {
+        rightMotor->run(BACKWARD);
+        rightMotor->setSpeed(25); // make left side faster for a sharper right turn 
+        leftMotor->setSpeed(25); // make left side faster for a sharper right turn 
+
+      }
     }
+    
   }
 
-  if (rightIR < 600) { // If true, right sensor no longer sees black tape
+  else if (rightIR < rightThresh) { // If true, right sensor no longer sees black tape = TURN LEFT
     leftMotor->setSpeed(22); // make the left motor slower to make a slight left
-    if (wideRightIR < 680) { // if both right and wide right are off black tape
+    if (wideRightIR < wideRightThresh) { // if both right and wide right are off black tape
       rightMotor->setSpeed(35); // make  right side faster for a sharper left turn
+      if (leftIR < leftThresh) {
+        leftMotor->run(BACKWARD);
+        leftMotor->setSpeed(25); // make left side faster for a sharper right turn 
+        rightMotor->setSpeed(25); // make left side faster for a sharper right turn 
+
+      }
     }
   }
-
+  */
 }
