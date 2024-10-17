@@ -9,8 +9,8 @@ Adafruit_DCMotor * rightMotor = AFMS.getMotor(4);
 int wideLeftIR = 0;
 int wideRightIR = 0;
 
-int wideLeftThresh = 795;
-int wideRightThresh = 805;
+int wideLeftThresh = 690;//550 //745
+int wideRightThresh = 780;//765 //835
 
 int leftMotorVel;
 int rightMotorVel;
@@ -40,14 +40,16 @@ void loop() {
   leftMotor->setSpeed(leftMotorVel);
   rightMotor->setSpeed(rightMotorVel);
 
-  if (wideLeftIR > wideLeftThresh) {
-    leftMotorVel = 0;
-    rightMotorVel = 40;
-  }
+  
 
-  else if(wideRightIR > wideRightThresh) {
+  if(wideRightIR > wideRightThresh) {
     rightMotorVel = 0;
     leftMotorVel = 40;
+  }
+
+  else if (wideLeftIR > wideLeftThresh) {
+    leftMotorVel = 0;
+    rightMotorVel = 40;
   }
 
   else {
@@ -57,17 +59,18 @@ void loop() {
   leftMotor->setSpeed(leftMotorVel);
   rightMotor->setSpeed(rightMotorVel);
   
-  Serial.print("Right_Motor_Vel:");
-  Serial.print(rightMotorVel);
-  Serial.print(",");
-  Serial.print("Left_Motor_Vel:");
-  Serial.print(leftMotorVel);
-  Serial.print(",");
-  Serial.print("Left_Sensor:");
+//  Serial.print("Right_Motor_Vel:");
+//  Serial.print("Left_Sensor:");
   Serial.print(wideLeftIR);
   Serial.print(",");
-  Serial.print("Right_Sensor:");
-  Serial.println(wideRightIR);
+//  Serial.print("Right_Sensor:");
+  Serial.print(wideRightIR);
+  
+  Serial.print(",");
+//  Serial.print("Left_Motor_Vel:");
+  Serial.print(leftMotorVel);
+  Serial.print(",");
+  Serial.println(rightMotorVel);
   /*
   if (leftIR < leftThresh) { // If true, left sensor no longer sees black tape = TURN RIGHT
 
