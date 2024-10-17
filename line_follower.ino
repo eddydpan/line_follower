@@ -6,24 +6,14 @@ Adafruit_MotorShield AFMS = Adafruit_MotorShield();
 Adafruit_DCMotor * leftMotor = AFMS.getMotor(3);
 Adafruit_DCMotor * rightMotor = AFMS.getMotor(4);
 
-int blinkTime = millis();
-int t;
-
 int wideLeftIR = 0;
-int leftIR = 0;
-int rightIR = 0;
 int wideRightIR = 0;
 
-//int wideLeftThresh = 955;
-//int wideRightThresh = 835;
+int wideLeftThresh = 795;
+int wideRightThresh = 805;
 
-int wideLeftThresh = 970;
-int wideRightThresh = 875;
-
-//int leftThresh = 740;
-//int rightThresh = 730;
-
-
+int leftMotorVel;
+int rightMotorVel;
 void setup() {
   // put your setup code here, to run once:
   long baudRate = 9600;
@@ -34,51 +24,53 @@ void setup() {
 }
 
 void loop() {
-
-  
-
-//  t = millis()
-//  currentTime = (t - blinkTime)
-//  Serial.println(current_time);
-//  timeSinceBlink = 
-  
-  
-
   leftMotor->run(BACKWARD);
   rightMotor->run(BACKWARD);
 
-  leftIR = analogRead(1);
+//  leftIR = analogRead(1);
   wideRightIR = analogRead(3);
-  rightIR = analogRead(2);
-  wideLeftIR = analogRead(5);
-  
+//  rightIR = analogRead(2);
+  wideLeftIR = analogRead(2);
+  /*
   Serial.print(wideLeftIR);
   Serial.print(",");
-//  Serial.print(leftIR);
-//  Serial.print(",");
-//  Serial.print(rightIR);
-//  Serial.print(",");
   Serial.print(wideRightIR);
   Serial.println("");
+  */
+  leftMotor->setSpeed(leftMotorVel);
+  rightMotor->setSpeed(rightMotorVel);
 
   if (wideLeftIR > wideLeftThresh) {
-    leftMotor->setSpeed(10);
-    Serial.println("LEFT SEES TAPE. GO RIGHT");
+    leftMotorVel = 0;
+    rightMotorVel = 40;
   }
 
   else if(wideRightIR > wideRightThresh) {
-    rightMotor->setSpeed(10); 
-    Serial.println("RIGHT SEES TAPE. GO LEFT");
-
-
+    rightMotorVel = 0;
+    leftMotorVel = 40;
   }
+
   else {
-    leftMotor->setSpeed(30);
-    rightMotor->setSpeed(30);
+    rightMotorVel = 20;
+    leftMotorVel = 20;
   }
+  leftMotor->setSpeed(leftMotorVel);
+  rightMotor->setSpeed(rightMotorVel);
   
+  Serial.print("Right_Motor_Vel:");
+  Serial.print(rightMotorVel);
+  Serial.print(",");
+  Serial.print("Left_Motor_Vel:");
+  Serial.print(leftMotorVel);
+  Serial.print(",");
+  Serial.print("Left_Sensor:");
+  Serial.print(wideLeftIR);
+  Serial.print(",");
+  Serial.print("Right_Sensor:");
+  Serial.println(wideRightIR);
   /*
   if (leftIR < leftThresh) { // If true, left sensor no longer sees black tape = TURN RIGHT
+
     rightMotor->setSpeed(22); // make the right motor slower to make a slight right
     Serial.println("");
     if (wideRightIR > wideRightThresh) { // if both left is off tape and wide right is on tape
