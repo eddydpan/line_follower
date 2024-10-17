@@ -62,19 +62,19 @@ void loop() {
   Serial.println("");
 
   if (wideLeftIR > wideLeftThresh) {
-    rightMotor->setSpeed(0);
+    leftMotor->setSpeed(10);
     Serial.println("LEFT SEES TAPE. GO RIGHT");
   }
 
   else if(wideRightIR > wideRightThresh) {
-    leftMotor->setSpeed(0);
+    rightMotor->setSpeed(10); 
     Serial.println("RIGHT SEES TAPE. GO LEFT");
 
 
   }
   else {
-    leftMotor->setSpeed(25);
-    rightMotor->setSpeed(25);
+    leftMotor->setSpeed(30);
+    rightMotor->setSpeed(30);
   }
   
   /*
